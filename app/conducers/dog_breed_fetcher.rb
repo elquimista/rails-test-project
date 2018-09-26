@@ -18,6 +18,21 @@ class DogBreedFetcher
     DogBreedFetcher.new(name).fetch
   end
 
+  def self.names
+    begin
+      body = JSON.parse(RestClient.get('https://dog.ceo/api/breeds/list/all').body)
+      body['message'].reduce([]) do |names, (breed, sub_breeds)|
+        if sub_breeds.empty?
+          names.concat([breed])
+        else
+          names.concat(sub_breeds.map { |e| [e, breed].join(' ') })
+        end
+      end 
+    rescue Object => e
+      []
+    end
+  end
+
 private
   def fetch_info
     begin

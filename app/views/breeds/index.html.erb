@@ -1,6 +1,7 @@
 <div class="dog">
 
   <h1>It's a dog</h1>
+  <%= select_tag :breed, breed_name_options_for_select(@names), prompt: 'Choose a breed' %>
 
   <h3><%= @breed.name.humanize %></h3>
 
