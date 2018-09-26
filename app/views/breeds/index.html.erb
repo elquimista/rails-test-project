@@ -1,9 +1,11 @@
 <div class="dog">
 
   <h1>It's a dog</h1>
-  <%= select_tag :breed, breed_name_options_for_select(@names), prompt: 'Choose a breed' %>
+  <%= form_tag breeds_path, method: :get do %>
+    <%= select_tag :breed_name, breed_name_options_for_select(@names, @breed_name), prompt: 'Choose a breed', onchange: 'this.form.submit();' %>
+  <% end %>
 
-  <h3><%= @breed.name.humanize %></h3>
+  <h3><%= @breed.name.split('/').reverse.join(' ').titleize %></h3>
 
   <%= image_tag @breed.pic_url %>
 

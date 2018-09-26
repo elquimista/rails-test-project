@@ -25,7 +25,7 @@ class DogBreedFetcher
         if sub_breeds.empty?
           names.concat([breed])
         else
-          names.concat(sub_breeds.map { |e| [e, breed].join(' ') })
+          names.concat(sub_breeds.map { |e| [breed, e].join('/') })
         end
       end 
     rescue Object => e
@@ -36,7 +36,7 @@ class DogBreedFetcher
 private
   def fetch_info
     begin
-      JSON.parse(RestClient.get("https://dog.ceo/api/breeds/image/#{ @name }").body)
+      JSON.parse(RestClient.get(api_url).body)
     rescue Object => e
       default_body
     end
@@ -47,5 +47,13 @@ private
       "status"  => "success",
       "message" => "https://images.dog.ceo/breeds/cattledog-australian/IMG_2432.jpg"
     }
+  end
+
+  def api_url
+    if @name == 'random'
+      'https://dog.ceo/api/breeds/image/random'
+    else
+      "https://dog.ceo/api/breed/#{@name}/images/random"
+    end
   end
 end
